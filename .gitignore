@@ -1,0 +1,26 @@
+# ===== 敏感文件，绝不上传 =====
+# 真实用户案例数据（运行时生成，只存本地）
+cases/
+# 密钥/凭证
+*.env
+.env*
+secrets/
+# 个人敏感材料（防止误传：真简历、身份证、扫描件等）
+*身份证*
+*简历_原始*
+*_真实*
+*.pdf
+*.docx
+*.doc
+
+# ===== 系统/编辑器 =====
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# ===== Python =====
+__pycache__/
+*.pyc
+*.pyo
