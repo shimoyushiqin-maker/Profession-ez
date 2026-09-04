@@ -2,6 +2,24 @@
 
 数据层是五个技能共享的"记忆"。没有它，每个技能都是失忆的；有了它，飞轮才能越转越快。
 
+## ⚠️ 文件路径约定（跨平台必读）
+
+不同 AI 平台的文件系统不一样，按以下优先级查找文件：
+
+1. **优先**：从当前技能目录往上找 `shared/`、`assets/`、`scripts/` 文件夹
+2. **其次**：在工作区根目录找这些文件夹
+3. **都找不到**：告诉用户"我找不到知识库和模板文件，请确认 Profession-ez 的 shared/、assets/、scripts/ 文件夹是否在 AI 能访问的位置"，不要硬撑
+
+**绝对路径示例**（供你参考定位）：
+- 技能主文件：`skills/career-transition-gate/SKILL.md`
+- 共享规则：`shared/anti-hallucination-rules.md`
+- 模板：`assets/templates/case/profile.yaml`
+- 脚本：`scripts/salary_calculator.py`
+- 知识库模板：`assets/templates/knowledge-base/`
+- 用户案例：`cases/<日期-代号>/`
+
+---
+
 ## 一、案例文件夹（每个用户一个）
 
 位置：`cases/<日期-用户代号>/`，例如 `cases/20260903-aimo/`。
@@ -15,6 +33,7 @@
 | `strengths.md` | 优势清单：每条必须带证据 | 转行门、简历优化 |
 | `transition-plan.md` | 转行规划：知识路线、项目安排、时间预算 | 转行门 |
 | `project-log.md` | 项目日志：做了哪些实操项目、交付物、可写进简历的 bullet | 转行门、简历优化 |
+| `jd-research-*.md` | JD 调研报告：某岗位的市场真实需求（15+ JD 分析结果），文件名含岗位和日期，如 `jd-research-ai运营-202609.md` | 转行门、简历优化、JD备战 |
 | `target-roles.csv` | 目标岗位清单：各方向匹配理由、缺口、30天行动、优先级 | 转行门 |
 | `expression-weaknesses.md` | 表达弱点清单：口头禅、逻辑毛病、紧张触发点 | 表达训练、JD备战 |
 | `interview-story-bank.md` | 面试故事库：STAR 结构化故事 + 风险措辞 + 改进版回答 | 表达训练、JD备战 |
@@ -30,16 +49,31 @@
 ```
 knowledge-base/
 ├── index.md              # 索引：每个条目的元数据（岗位/日期/关键词/一句话摘要）
+├── ai-operations-basics.md  # AI运营入门知识库（种子内容）
 ├── interview-question-bank/  # 真实面试题库，按岗位分文件
 ├── industry-data/            # 行业薪资、门槛、真实工作内容
 ├── project-library.md        # 实操项目库
 └── mistake-book.md           # 错题本：失败案例、减分点
 ```
 
-**检索规则（防上下文过长）**：
+### 知识库加载协议
+
+**什么时候加载：**
+- 技能启动时：只读 `index.md`，了解有哪些内容
+- 涉及具体知识点时：按需读取对应文件，不全量加载
+- 行业真相阶段：如果有对应行业的 `industry-data/` 文件，先读再搜（作为基础，实时搜索补充最新数据）
+- 面试备战阶段：先读 `interview-question-bank/` 里对应岗位的题目
+
+**找不到知识库怎么办：**
+1. 先看 `assets/templates/knowledge-base/` 里有没有模板（模板里有种子内容）
+2. 模板也找不到：告诉用户"知识库文件不在，请确认文件位置"
+3. 不要因为没有知识库就瞎编内容——查不到就说查不到，让用户提供信息或一起构建
+
+**检索规则（防上下文过长）：**
 1. 技能启动时只读 `index.md`（几百字）
 2. 按需读取具体条目文件，不全量加载
 3. 引用条目时注明来源文件和日期
+4. 用索引里的关键词做匹配，不要凭感觉猜文件内容
 
 ## 三、文档入库协议
 
@@ -74,8 +108,8 @@ knowledge-base/
 
 | 技能 | 读 | 写 |
 |---|---|---|
-| 转行门 | profile、knowledge-base/index | profile、transition-plan、target-roles、experience-assets、strengths、project-log |
-| 简历优化 | profile、experience-assets、project-log、strengths | resume 文件、application-tracker |
+| 转行门 | profile、knowledge-base/index | profile、transition-plan、target-roles、experience-assets、strengths、project-log、jd-research-* |
+| 简历优化 | profile、experience-assets、project-log、strengths、jd-research-* | resume 文件、application-tracker |
 | JD备战 | profile、expression-weaknesses、interview-story-bank、interview-question-bank | interview-log、interview-story-bank、interview-question-bank、mistake-book |
 | 表达训练 | profile、expression-weaknesses、interview-story-bank | expression-weaknesses、interview-story-bank |
 | Offer评估 | profile、offer 历史 | offer-review、industry-data（薪资数据点） |

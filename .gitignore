@@ -20,6 +20,9 @@ desktop.ini
 .vscode/
 .idea/
 
+# ===== 本地辅助脚本（不上传） =====
+push-to-github.bat
+
 # ===== Python =====
 __pycache__/
 *.pyc
